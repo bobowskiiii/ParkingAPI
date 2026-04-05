@@ -12,4 +12,4 @@ public class ParkingGate : EntityBase
 
     public ICollection<ParkingSession> Sessions { get; set; } = [];
     public ICollection<CameraCapture> Captures { get; set; } = [];
-}
+}   
