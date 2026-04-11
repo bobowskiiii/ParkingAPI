@@ -21,4 +21,6 @@ public class ParkingGate : EntityBase
         Location = location;
         IsOperational = true;
     }
+    
+        
 }   

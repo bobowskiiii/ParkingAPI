@@ -1,7 +1,11 @@
+using AppCore.Mappings;
+using AutoMapper;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+// builder.Services.AddAutoMapper((Action<IMapperConfigurationExpression>)null , typeof(Program).Assembly);
 
 var app = builder.Build();
 
