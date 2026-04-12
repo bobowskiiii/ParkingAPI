@@ -1,6 +1,10 @@
-namespace Infrastructure.Repositories;
+using Domain.Common;
+using Domain.Entities;
 
-public interface IParkingTariffRepository
+namespace Domain.Interfaces;
+
+public interface IParkingTariffRepository : IGenericRepositoryAsync<ParkingTariff>
 {
-    
+    Task<ParkingTariff?> GetActiveAsync();
+    Task<IEnumerable<ParkingTariff>> GetAllActiveAsync();
 }

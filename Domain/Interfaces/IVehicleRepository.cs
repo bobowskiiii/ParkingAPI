@@ -1,7 +1,7 @@
 using Domain.Common;
 using Domain.Entities;
 
-namespace Infrastructure.Repositories;
+namespace Domain.Interfaces;
 
 public interface IVehicleRepository : IGenericRepositoryAsync<Vehicle>
 {

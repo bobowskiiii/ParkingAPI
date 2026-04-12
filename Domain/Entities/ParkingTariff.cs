@@ -21,7 +21,7 @@ public class ParkingTariff : EntityBase
         return Math.Min(fee, DailyMaxRate);
     }
     private ParkingTariff() { }
-    public ParkingTariff(string name, TimeSpan freeParkingDuration, decimal hourlyRate, decimal dailyMaxRate)
+    public ParkingTariff(string name, TimeSpan freeParkingDuration, decimal hourlyRate, decimal dailyMaxRate, bool isActive = true)
     {
         Name = name;
         FreeParkingDuration = freeParkingDuration;

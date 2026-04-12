@@ -1,6 +1,9 @@
-namespace Infrastructure.Repositories;
+using Domain.Common;
+using Domain.Entities;
 
-public interface IParkingGateRepository
+namespace Domain.Interfaces;
+
+public interface IParkingGateRepository : IGenericRepositoryAsync<ParkingGate>
 {
-    
+    Task<ParkingGate?> GetByNameAsync(string name);
 }

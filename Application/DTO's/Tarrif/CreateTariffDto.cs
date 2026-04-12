@@ -11,13 +11,11 @@ public record CreateTariffDto(
 {
     public ParkingTariff ToEntity()
     {
-        return new ParkingTariff()
-        {
-            Name = Name
-            FreeParkingDuration = TimeSpan.FromMinutes(FreeMinutes), 
-            HourlyRate, 
-            DailyMaxRate);
-        }
-            
+        return new ParkingTariff(
+            Name,
+            TimeSpan.FromMinutes(FreeMinutes),
+            HourlyRate,
+            DailyMaxRate,
+            isActive: false);
     }
 }
