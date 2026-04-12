@@ -8,19 +8,16 @@ public class MemoryParkingUnitOfWork(
     IParkingGateRepository gates,
     IParkingTariffRepository tariffs,
     ICameraCaptureRepository captures
-) : IParkingUnitOdWork
+): IParkingUnitOfWork
 {
-    public IVehicleRepository VehicleRepository { get; }
-    public IParkingGateRepository ParkingGateRepository { get; }
-    public IParkingSessionRepository ParkingSessionRepository { get; }
-    public IParkingTariffRepository ParkingTariffRepository { get; }
-    public ICameraCaptureRepository CameraCaptureRepository { get; }
+    public IVehicleRepository VehicleRepository { get; } = vehicles;
+    public IParkingGateRepository ParkingGateRepository { get; } = gates;
+    public IParkingSessionRepository ParkingSessionRepository { get; } = parkingSessions;
+    public IParkingTariffRepository ParkingTariffRepository { get; } = tariffs;
+    public ICameraCaptureRepository CameraCaptureRepository { get; } = captures;
     
     public Task<int> SaveChangesAsync() => Task.FromResult(0);
-
     public Task BeginTransactionAsync() => Task.CompletedTask;
-
     public Task CommitTransactionAsync() => Task.CompletedTask;
-
     public Task RollbackTransactionAsync() => Task.CompletedTask;
 }

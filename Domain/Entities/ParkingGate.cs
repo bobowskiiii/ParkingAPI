@@ -16,10 +16,16 @@ public class ParkingGate : EntityBase
     private ParkingGate() { }
     public ParkingGate(string name, GateType type, string location)
     {
+        Id = Guid.NewGuid();
         Name = name;
         Type = type;
         Location = location;
         IsOperational = true;
+    }
+    
+    public void SetOperationalStatus(bool isOperational)
+    {
+        IsOperational = isOperational;
     }
     
         

@@ -1,33 +1,46 @@
+using AppCore.Interfaces;
 using AppCore.Mappings;
+using AppCore.Services;
 using AutoMapper;
+using Domain.Interfaces;
+using Infrastructure.Memory;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 // builder.Services.AddAutoMapper((Action<IMapperConfigurationExpression>)null , typeof(Program).Assembly);
+
+
+//Repositories
+builder.Services.AddSingleton<IVehicleRepository, InMemoryVehicleRepository>();
+builder.Services.AddSingleton<IParkingGateRepository, InMemoryParkingGateRepository>();
+builder.Services.AddSingleton<IParkingSessionRepository, InMemoryParkingSessionRepository>();
+builder.Services.AddSingleton<IParkingTariffRepository, InMemoryParkingTariffRepository>();
+builder.Services.AddSingleton<ICameraCaptureRepository, InMemoryCameraCaptureRepository>();
+
+//UnitOfWork
+builder.Services.AddSingleton<IParkingUnitOfWork, MemoryParkingUnitOfWork>();
+
+//Services
+builder.Services.AddSingleton<IParkingGateService, MemoryParkingGateService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+// HTTP request pipeline
+if (app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
-app.UseRouting();
-
 app.UseAuthorization();
+app.MapControllers();
 
-app.MapStaticAssets();
-
-app.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
-
+//Redirect to swagger
+app.MapGet("/", () => Results.Redirect("/swagger"));
 
 app.Run();

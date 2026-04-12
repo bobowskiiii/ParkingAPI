@@ -1,6 +1,6 @@
 namespace Domain.Interfaces;
 
-public interface IParkingUnitOdWork
+public interface IParkingUnitOfWork
 {
     IVehicleRepository VehicleRepository { get; }
     IParkingGateRepository ParkingGateRepository { get; }
