@@ -21,21 +21,27 @@ public class ParkingSession : EntityBase
     public bool IsActive { get; private set; }
 
     private ParkingSession() { }
-    public ParkingSession(Vehicle vehicle, ParkingGate parkingGate, ParkingTariff parkingTariff)
+    public ParkingSession(Guid vehicleId, Vehicle vehicle, ParkingGate parkingGate, ParkingTariff parkingTariff)
     {
+        Id = Guid.NewGuid();
+        VehicleId = vehicleId;
         Vehicle = vehicle;
+        ParkingGateId = parkingGate.Id;
         ParkingGate = parkingGate;
+        ParkingTariffId = parkingTariff.Id;
         ParkingTariff = parkingTariff;
+        GateName = parkingGate.Name;
         EntryTime = DateTime.UtcNow;
         IsActive = true;
     }
     
     public void Complete(ParkingTariff tariff)
     {
-        if (this.IsActive)
+        if (!this.IsActive)
             throw new InvalidOperationException("Session is already completed");
 
         ExitTime = DateTime.UtcNow;
+        Duration = ExitTime.Value - EntryTime;
         Fee = tariff.CalculateFee(ExitTime.Value - EntryTime);
         IsActive = false;
     }
