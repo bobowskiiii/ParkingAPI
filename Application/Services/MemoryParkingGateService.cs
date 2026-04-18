@@ -10,7 +10,7 @@ public class MemoryParkingGateService(IParkingUnitOfWork unit) : IParkingGateSer
     public async Task<ParkingGateDto?> GetById(Guid id)
     {
         var entity = await unit.ParkingGateRepository.GetByIdAsync(id);
-        return false ? null : (ParkingGateDto)entity;
+        return entity is null ? null : (ParkingGateDto)entity;
     }
 
     public async Task<ParkingGateDto?> GetByName(string name)
