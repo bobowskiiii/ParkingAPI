@@ -1,0 +1,17 @@
+@host = https://localhost:{{port}}
+@port = 5001
+
+### Test PUT update gate
+# First, you might need to get an existing gate ID
+GET {{host}}/api/gates
+Accept: application/json
+
+### Update existing gate (Replace {id} with actual gate ID from previous request)
+PUT {{host}}/api/gates/00000000-0000-0000-0000-000000000000
+Content-Type: application/json
+
+{
+  "name": "Nowa Nazwa",
+  "type": "Both"
+}
+

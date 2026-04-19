@@ -35,6 +35,13 @@ public class GatesController(IParkingGateService service) : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
     }
 
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateGateDto dto)
+    {
+        var result = await service.Update(id, dto);
+        return result is null ? NotFound() : Ok(result);
+    }
+
     [HttpPatch("{id:guid}/status")]
     public async Task<IActionResult> ChangeStatus(Guid id, [FromQuery] bool isOperational)
     {

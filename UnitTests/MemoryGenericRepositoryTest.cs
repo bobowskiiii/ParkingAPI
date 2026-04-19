@@ -77,7 +77,7 @@ public class MemoryGenericRepositoryTest
     {
         await Assert.ThrowsAsync<KeyNotFoundException>(() =>
             _repo.DeleteAsync(Guid.NewGuid()));
-    }
+    }   
 
     [Fact]
     public async Task AddAsync_ThrowsWhenDuplicateId()

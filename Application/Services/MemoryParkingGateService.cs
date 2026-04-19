@@ -16,7 +16,7 @@ public class MemoryParkingGateService(IParkingUnitOfWork unit) : IParkingGateSer
     public async Task<ParkingGateDto?> GetByName(string name)
     {
         var entity = await unit.ParkingGateRepository.GetByNameAsync(name);
-        return entity is null ? null : (ParkingGateDto)entity;
+        return entity is null ? null : (ParkingGateDto)entity;    
     }
 
     public async Task<PagedResult<ParkingGateDto>> GetAllPaged(int page, int pageSize)
@@ -34,6 +34,19 @@ public class MemoryParkingGateService(IParkingUnitOfWork unit) : IParkingGateSer
         var entity = dto.ToEntity;
         await unit.ParkingGateRepository.AddAsync(entity);
         
+        return entity;
+    }
+
+    public async Task<ParkingGateDto?> Update(Guid id, UpdateGateDto dto)
+    {
+        var entity = await unit.ParkingGateRepository.GetByIdAsync(id);
+        if (entity is null)
+            return null;
+
+        var type = Enum.Parse<Domain.Enums.GateType>(dto.Type, true);
+        entity.Update(dto.Name, type);
+        
+        await unit.ParkingGateRepository.UpdateAsync(entity);
         return entity;
     }
 

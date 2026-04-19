@@ -28,5 +28,10 @@ public class ParkingGate : EntityBase
         IsOperational = isOperational;
     }
     
-        
+    public void Update(string name, GateType type)
+    {
+        Name = name;
+        Type = type;
+        UpdatedAt = DateTime.UtcNow;
+    }
 }   

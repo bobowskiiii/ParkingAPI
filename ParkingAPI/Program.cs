@@ -1,45 +1,45 @@
 using AppCore.Interfaces;
-using AppCore.Mappings;
+using AppCore.Module;
 using AppCore.Services;
-using AutoMapper;
 using Domain.Interfaces;
 using Infrastructure.Memory;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddAppCoreModule(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-// builder.Services.AddAutoMapper((Action<IMapperConfigurationExpression>)null , typeof(Program).Assembly);
+builder.Services.AddOpenApi();
 
-
-//Repositories
+// Repositories
 builder.Services.AddSingleton<IVehicleRepository, InMemoryVehicleRepository>();
 builder.Services.AddSingleton<IParkingGateRepository, InMemoryParkingGateRepository>();
 builder.Services.AddSingleton<IParkingSessionRepository, InMemoryParkingSessionRepository>();
 builder.Services.AddSingleton<IParkingTariffRepository, InMemoryParkingTariffRepository>();
 builder.Services.AddSingleton<ICameraCaptureRepository, InMemoryCameraCaptureRepository>();
 
-//UnitOfWork
+// UnitOfWork
 builder.Services.AddSingleton<IParkingUnitOfWork, MemoryParkingUnitOfWork>();
 
-//Services
+// Services
 builder.Services.AddSingleton<IParkingGateService, MemoryParkingGateService>();
 
 var app = builder.Build();
 
-// HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.MapOpenApi();
+    app.MapScalarApiReference(options =>
+    {
+        options.WithTitle("ParkingAPI");
+    });
 }
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
-//Redirect to swagger
-app.MapGet("/", () => Results.Redirect("/swagger"));
+app.MapGet("/", () => Results.Redirect("/scalar/v1"));
 
 app.Run();
