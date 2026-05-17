@@ -16,6 +16,15 @@ public class InMemoryCameraCaptureRepository : MemoryGenericRepository<CameraCap
         return Task.FromResult(result);
     }
 
+    public Task<IEnumerable<CameraCapture>> FindByGateIdAsync(Guid gateId)
+    {
+        var result = _data.Values
+            .Where(c => c.ParkingGateId == gateId)
+            .AsEnumerable();
+        
+        return Task.FromResult(result);
+    }
+
     public Task<IEnumerable<CameraCapture>> FindByGateNameAsync(string gateName)
     {
         var result = _data.Values
@@ -25,4 +34,6 @@ public class InMemoryCameraCaptureRepository : MemoryGenericRepository<CameraCap
         
         return Task.FromResult(result);
     }
+    
+    
 }

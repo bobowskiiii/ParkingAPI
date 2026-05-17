@@ -18,7 +18,7 @@ public class MemoryGenericRepository<T> : IGenericRepositoryAsync<T> where T : E
         return Task.FromResult(result);
     }
 
-    public Task<PagedResult<T?>> GetPagedAsync(int page, int pageSize)
+    public Task<PagedResult<T>> GetPagedAsync(int page, int pageSize)
     {
         var all = _data.Values.AsEnumerable();
         var items = all

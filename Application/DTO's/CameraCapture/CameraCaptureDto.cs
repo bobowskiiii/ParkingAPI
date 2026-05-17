@@ -3,6 +3,7 @@ using Domain.Entities;
 namespace AppCore.DTO_s;
 
 public record CameraCaptureDto(
+    Guid Id,
     string LicensePlate,
     string Brand,
     string Color,
@@ -13,6 +14,7 @@ public record CameraCaptureDto(
 {
     public static implicit operator CameraCaptureDto(CameraCapture entity) =>
         new(
+            entity.Id,
             entity.LicensePlate,
             entity.DetectedBrand,
             entity.DetectedColor,

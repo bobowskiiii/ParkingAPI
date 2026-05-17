@@ -1,7 +1,6 @@
 using Domain.Common;
+using Domain.Entities;
 using Domain.Enums;
-
-namespace Domain.Entities;
 
 public class CameraCapture : EntityBase
 {
@@ -18,14 +17,15 @@ public class CameraCapture : EntityBase
     
     private CameraCapture() { }
 
-    public CameraCapture(string gateName, string licensePlate, string detectedBrand, string detectedColor,
-        DateTime capturedAt, string imagePath, CaptureType captureType, Guid parkingGateId)
+    public CameraCapture(string gateName, string licensePlate, string detectedBrand, 
+        string detectedColor, string imagePath, CaptureType captureType, Guid parkingGateId)
     {
+        Id = Guid.NewGuid();
         GateName = gateName;
         LicensePlate = licensePlate;
         DetectedBrand = detectedBrand;
         DetectedColor = detectedColor;
-        CapturedAt = capturedAt;
+        CapturedAt = DateTime.UtcNow;
         ImagePath = imagePath;
         CaptureType = captureType;
         ParkingGateId = parkingGateId;

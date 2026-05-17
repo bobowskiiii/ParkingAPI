@@ -1,3 +1,4 @@
+using AppCore.DTO_s;
 using AppCore.DTO_s.Gate;
 using AppCore.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -47,5 +48,45 @@ public class GatesController(IParkingGateService service) : ControllerBase
     {
         var result = await service.ChangeOperationalStatus(id, isOperational);
         return result is null ? NotFound() : Ok(result);
+    }
+    
+    [HttpPost("{gateId:guid}/captures")]
+    [ProducesResponseType(typeof(CameraCaptureDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> AddCameraCapture(
+        [FromRoute] Guid gateId,
+        [FromBody] CameraCaptureCreateDto dto)
+    {
+        var capture = await service.AddCapture(gateId, dto);
+        return CreatedAtAction(
+            nameof(GetCaptures),
+            new { gateId },
+            capture);
+    }
+
+    [HttpGet("{gateId:guid}/captures")]
+    [ProducesResponseType(typeof(IEnumerable<CameraCaptureDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetCaptures(
+        [FromRoute] Guid gateId,
+        [FromQuery] int page = 1,
+        [FromQuery] int size = 10)
+    {
+        var gate = await service.GetById(gateId);
+        if (gate is null)
+            return NotFound();
+
+        var captures = await service.GetCaptures(gateId, 1, int.MaxValue);
+        return Ok(captures);
+    }
+    
+    [HttpDelete("{gateId:guid}/captures/{captureId:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteCapture(Guid gateId, Guid captureId)
+    {
+        await service.DeleteCapture(captureId, gateId);
+        return NoContent();
     }
 }

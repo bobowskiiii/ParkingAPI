@@ -3,6 +3,7 @@ using AppCore.Module;
 using AppCore.Services;
 using Domain.Interfaces;
 using Infrastructure.Memory;
+using ParkingAPI.Middleware;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,6 +26,10 @@ builder.Services.AddSingleton<IParkingUnitOfWork, MemoryParkingUnitOfWork>();
 // Services
 builder.Services.AddSingleton<IParkingGateService, MemoryParkingGateService>();
 
+//Middleware
+builder.Services.AddExceptionHandler<ProblemDetailsExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -36,6 +41,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseExceptionHandler();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
